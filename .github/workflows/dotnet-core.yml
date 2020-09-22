@@ -3,7 +3,9 @@ name: .NET Core
 on:
   pull_request:
     branches: [ master ]
-    paths: [ 'apis/poi/**' ]
+    paths:
+      - 'apis/poi/**'
+      - '.github/workflows/poi.yml'
 
 jobs:
   build:
