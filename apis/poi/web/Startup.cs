@@ -13,7 +13,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using poi.Data;
 using poi.Utility;
-using Newtonsoft.Json;
+using Newtonsoft.Json
 using Microsoft.AspNetCore.Rewrite;
 
 namespace poi
