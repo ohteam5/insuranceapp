@@ -1,0 +1,29 @@
+name: .NET Core
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths: [ 'apis/poi/**' ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      workDir: ./apis/poi/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.200
+    - name: Install dependencies
+      working-directory: ${{env.workDir}}
+      run: dotnet restore
+    - name: Build
+      working-directory: ${{env.workDir}}
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      working-directory: ${{env.workDir}}/tests/UnitTests/
+      run: dotnet test --no-restore --verbosity normal
