@@ -36,6 +36,6 @@ jobs:
             github.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'Build failing! Please fix it!'
+              title: 'Build failing! Please fix it!' + context.sha
             })
       
