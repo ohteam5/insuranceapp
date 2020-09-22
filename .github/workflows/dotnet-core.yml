@@ -27,3 +27,15 @@ jobs:
     - name: Test
       working-directory: ${{env.workDir}}/tests/UnitTests/
       run: dotnet test --no-restore --verbosity normal
+    - name: Create an issue on failure
+      if: ${{ failure() }}
+      uses: actions/github-script@v3.0.0
+      with:
+        # The script to run
+        script: |
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Build failing! Please fix it!'
+            })
+      
