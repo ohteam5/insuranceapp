@@ -14,7 +14,7 @@ namespace poi.Models
 
     public class POI : BaseDataObject
     {
-        public string TripId { get; set }
+        public string TripId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public POIType PoiType { get; set; }
