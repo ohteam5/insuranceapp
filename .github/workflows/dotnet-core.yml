@@ -5,7 +5,7 @@ on:
     branches: [ master ]
     paths:
       - 'apis/poi/**'
-      - '.github/workflows/poi.yml'
+      - '.github/workflows/dotnet-core.yml'
 
 jobs:
   build:
