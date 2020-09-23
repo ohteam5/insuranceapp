@@ -46,6 +46,6 @@ jobs:
             });      
     - name: Docker Build & Push to ACR
       run: |
-        docker  build . -t ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }} -f ./apis/poi/web/Dockerfile ./apis/poi/web
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }} -f ./apis/poi/web/Dockerfile ./apis/poi/web
         
        
