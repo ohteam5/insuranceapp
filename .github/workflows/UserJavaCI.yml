@@ -5,7 +5,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [vasalis*]
+    branches: [ master ]
     paths:
       - 'apis/user-java/**'
       - '.github/workflows/UserJavaCI.yml'
