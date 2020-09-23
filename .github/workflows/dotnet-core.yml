@@ -1,4 +1,4 @@
-name: .NET Core
+name: POI API .NET Core Workflow
 
 on:
   push:
