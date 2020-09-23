@@ -74,4 +74,8 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
         images: ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
         slot-name: 'staging' 
+    - name: Moving build to artifacts directory
+      run: | 
+        chmod +x ./testingscripts/polling.sh
+        ./testingscripts/polling.sh
        
