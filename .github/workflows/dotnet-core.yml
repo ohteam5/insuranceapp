@@ -1,6 +1,11 @@
 name: .NET Core
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - 'apis/poi/**'
+      - '.github/workflows/dotnet-core.yml'
   pull_request:
     branches: [ master ]
     paths:
