@@ -2,7 +2,7 @@
 
 declare -i duration=1
 declare hasUrl=""
-declare endpoint="https://openhackrwy2hdr5poi-staging.azurewebsites.net/api/healthcheck/poi"
+declare endpoint
 
 usage() {
     cat <<END
