@@ -19,7 +19,7 @@ jobs:
     env:
       working-directory: ./apis/trips
       container-registry: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
-      image-name: /devopsoh/api-trips
+      image-name: devopsoh/api-trips
       build-number: ${{github.run_number}}
 
     steps:
@@ -54,7 +54,7 @@ jobs:
       container-registry: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
       registry-username: ${{ secrets.REGISTRY_USERNAME }}
       registry-password: ${{ secrets.REGISTRY_PASSWORD }} 
-      image-name: /devopsoh/api-trips
+      image-name: devopsoh/api-trips
       build-number: ${{github.run_number}}
     if: github.event_name != 'pull_request'
 
