@@ -7,13 +7,15 @@ on:
       - 'apis/poi/**'
       - '.github/workflows/dotnet-core.yml'
 
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
     env:
       workDir: ./apis/poi/
-
+      AZURE_WEBAPP_NAME: WebApp   # set this to your application's name
+      CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -41,4 +43,9 @@ jobs:
               repo: context.repo.repo,
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
-            });
+            });      
+    - name: Docker Build & Push to ACR
+      run: |
+        docker  build . -t ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }} -f ./apis/poi/web/Dockerfile ./apis/poi/web
+        
+       
