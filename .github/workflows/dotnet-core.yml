@@ -78,4 +78,8 @@ jobs:
       run: | 
         chmod +x ./testingscripts/polling.sh
         ./testingscripts/polling.sh
+    - name: Moving build to artifacts directory
+      run: | 
+        chmod +x ./testingscripts/polling.sh
+        ./testingscripts/polling.sh -i 1 https://openhackrwy2hdr5poi-staging.azurewebsites.net/api/healthcheck/poi
        
