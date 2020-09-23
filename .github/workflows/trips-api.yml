@@ -97,7 +97,7 @@ jobs:
               {
                 "name": "IMAGE_NAME",
                 "value": "${{ env.image-name }}:${{ env.build-number }}",
-                "slotSetting": true
+                "slotSetting": false
               }
             ]
       - uses: azure/webapps-deploy@v2
@@ -122,5 +122,49 @@ jobs:
                 title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
                 body: body
               });   
+  production: 
+    needs: [staging]
+    runs-on: ubuntu-latest
+    env:
+      app-name: openhackrwy2hdr5trips
+      container-registry: ${{ secrets.REGISTRY_URL }}
+      image-name: devopsoh/api-trips
+      build-number: ${{ github.run_number }}
+    #if: github.event_name != 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Login via Azure Cli'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: 'Swap slots'
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp deployment slot swap --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot staging --target-slot production
+      - name: 'Is production healthy'
+        run: |
+          chmod +x ./apis/test.sh
+          ./apis/test.sh https://openhackrwy2hdr5trips.azurewebsites.net/api/healthcheck/trips
+      - name: 'Rollback'
+        if: $ {{ failure() }}
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp deployment slot swap --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot production --target-slot staging
+      - name: Create an issue on failure
+        if: ${{ failure() }}
+        uses: actions/github-script@v3.0.0
+        with:
+          # The script to run
+          script: |
+              let body = "${{ env.build_name }} Workflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+              github.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+                body: body
+              });  
         
        
