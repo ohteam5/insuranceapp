@@ -1,11 +1,17 @@
 name: .NET Core
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - 'apis/poi/**'
+      - '.github/workflows/dotnet-core.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'apis/poi/**'
       - '.github/workflows/dotnet-core.yml'
+
 
 jobs:
   build:
@@ -13,7 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       workDir: ./apis/poi/
-
+      AZURE_WEBAPP_NAME: WebApp   # set this to your application's name
+      CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -41,4 +48,20 @@ jobs:
               repo: context.repo.repo,
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
-            });
+            });      
+    - name: Docker Build
+      run: |
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }} -f ./apis/poi/web/Dockerfile ./apis/poi/web
+    - name: ACR authentication
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.CONTAINER_REGISTRY }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}    
+    - name: Docker Build & Push to ACR
+      if: ${{ github.event_name != 'pull_request' }}
+      run: |
+        docker push ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }}
+        
+       
