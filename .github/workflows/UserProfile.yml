@@ -34,7 +34,7 @@ jobs:
       working-directory: ${{env.workDir}}
       run: npm run build --if-present
     - name: Test
-      working-directory: ${{env.workDir}}/tests/UnitTests/
+      working-directory: ${{env.workDir}}
       run: npm test
     - name: Create an issue on failure
       if: ${{ failure() }}
