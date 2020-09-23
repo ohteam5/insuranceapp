@@ -34,7 +34,7 @@ App.use(Swaggerize({
     handlers: Path.resolve('./handlers')
 }));
 
-app.get('/alex', function (req, res) {
+App.get('/alex', function (req, res) {
   res.send('I was there!')
 });
 
