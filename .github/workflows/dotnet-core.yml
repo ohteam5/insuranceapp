@@ -27,6 +27,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.200
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Install dependencies
       working-directory: ${{env.workDir}}
       run: dotnet restore
@@ -62,15 +66,11 @@ jobs:
     - name: Docker Build & Push to ACR
       if: ${{ github.event_name != 'pull_request' }}
       run: |
-        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
-    - name: Azure authentication
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}    
     - name: 'Deploy to Azure Web App for Container'
       uses: azure/webapps-deploy@v2
       with: 
         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
         images: ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
-        slot-name: 'stagging' 
+        slot-name: 'staging' 
        
