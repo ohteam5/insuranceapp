@@ -89,7 +89,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - uses: azure/appservice-settings@v1
         with:
-          app-name: ${{ env-app-name }}
+          app-name: ${{ env.app-name }}
           slot-name: 'staging'
           app-settings-json: |
             [
