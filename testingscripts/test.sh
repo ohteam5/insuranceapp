@@ -2,7 +2,7 @@
 
 declare -i duration=10
 declare hasUrl=""
-declare endpoint=${1:-"https://openhackf4r03460userprofile-staging.azurewebsites.net/api/healthcheck/user"}
+declare endpoint=${1:-"https://openhackrwy2hdr5trips-staging.azurewebsites.net/api/healthcheck/trips"}
 declare -i status200count=0
 
 healthcheck() {
