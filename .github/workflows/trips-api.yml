@@ -87,6 +87,18 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/appservice-settings@v1
+        with:
+          app-name: ${{ env-app-name }}
+          slot-name: 'staging'
+          app-settings-json: |
+            [
+              {
+                "name": "IMAGE_NAME",
+                "value": "${{ env.image-name }}:${{ env.build_number }}",
+                "slotSetting": true
+              }
+            ]
       - uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.app-name }}
