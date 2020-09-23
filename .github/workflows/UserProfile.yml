@@ -1,0 +1,66 @@
+name: User Profile API Node.js Workflow
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'apis/userprofile/**'
+      - '.github/workflows/UserProfile.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'apis/userprofile/**'
+      - '.github/workflows/UserProfile.yml'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      workDir: ./apis/userprofile/
+      CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 8.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 8.x
+    - name: Install dependencies
+      working-directory: ${{env.workDir}}
+      run: npm ci
+    - name: Build
+      working-directory: ${{env.workDir}}
+      run: npm run build --if-present
+    - name: Test
+      working-directory: ${{env.workDir}}
+      run: npm test
+    - name: Create an issue on failure
+      if: ${{ failure() }}
+      uses: actions/github-script@v3.0.0
+      with:
+        # The script to run
+        script: |
+            let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+              body: body
+            });
+    - name: Docker Build
+      run: |
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:${{ github.run_number }} -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:latest ./apis/userprofile
+    - name: ACR authentication
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.CONTAINER_REGISTRY }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}    
+    - name: Docker Build & Push to ACR
+      if: ${{ github.event_name != 'pull_request' }}
+      run: |
+        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:${{ github.run_number }}
+        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:latest
