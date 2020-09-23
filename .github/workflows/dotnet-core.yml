@@ -2,7 +2,7 @@ name: POI API .NET Core Workflow
 
 on:
   push:
-    branches: [master]
+    branches: [vasalis*]
     paths:
       - 'apis/poi/**'
       - '.github/workflows/dotnet-core.yml'
@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       workDir: ./apis/poi/
+      AZURE_WEBAPP_NAME: openhackrwy2hdr5poi
       CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
     steps:
     - uses: actions/checkout@v2
@@ -50,7 +51,7 @@ jobs:
             });      
     - name: Docker Build
       run: |
-        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }} -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:latest -f ./apis/poi/web/Dockerfile ./apis/poi/web
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }} -f ./apis/poi/web/Dockerfile ./apis/poi/web
     - name: ACR authentication
       if: ${{ github.event_name != 'pull_request' }}
       uses: azure/docker-login@v1
@@ -62,6 +63,14 @@ jobs:
       if: ${{ github.event_name != 'pull_request' }}
       run: |
         docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
-        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:latest
-        
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: 'Deploy to Azure Web App for Container'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+        images: ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
+        slot-name: 'stagging' 
        
