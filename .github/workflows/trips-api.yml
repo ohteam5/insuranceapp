@@ -56,7 +56,7 @@ jobs:
       registry-password: ${{ secrets.REGISTRY_PASSWORD }} 
       image-name: devopsoh/api-trips
       build-number: ${{github.run_number}}
-    if: github.event_name != 'pull_request'
+    #if: github.event_name != 'pull_request'
 
     steps:
       - uses: actions/checkout@v2
@@ -79,7 +79,7 @@ jobs:
       app-name: openhackrwy2hdr5trips
       image-name: devopsoh/api-trips
       build-number: ${{ github.run_number }}
-    if: github.event_name != 'pull_request'
+    #if: github.event_name != 'pull_request'
     
     steps:
       - uses: actions/checkout@v2
