@@ -105,7 +105,9 @@ jobs:
           slot-name: 'staging'
           images: '${{ env.container-registry }}/${{ env.image-name }}:${{ env.build-number }}'
       - name: 'Is staging healthy?'
-        run: ./apis/test.sh https://openhackrwy2hdr5trips-staging.azurewebsites.net/api/healthcheck/trips
+        run: |
+          chmod +x ./apis/test.sh
+          ./apis/test.sh https://openhackrwy2hdr5trips-staging.azurewebsites.net/api/healthcheck/trips
       - name: Create an issue on failure
         if: ${{ failure() }}
         uses: actions/github-script@v3.0.0
