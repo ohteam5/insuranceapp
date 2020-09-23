@@ -97,7 +97,7 @@ jobs:
               {
                 "name": "IMAGE_NAME",
                 "value": "${{ env.image-name }}:${{ env.build-number }}",
-                "slotSetting": true
+                "slotSetting": false
               }
             ]
       - uses: azure/webapps-deploy@v2
