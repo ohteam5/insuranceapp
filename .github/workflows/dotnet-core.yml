@@ -69,17 +69,20 @@ jobs:
       run: |
         docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}    
     - name: 'Deploy to Azure Web App for Container'
+      if: ${{ github.event_name != 'pull_request' }}
       uses: azure/webapps-deploy@v2
       with: 
         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
         images: ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
         slot-name: 'staging' 
     - name: Moving build to artifacts directory
+      if: ${{ github.event_name != 'pull_request' }}
       run: | 
         chmod +x ./testingscripts/polling.sh
         ./testingscripts/polling.sh
     - name: Moving build to artifacts directory
+      if: ${{ github.event_name != 'pull_request' }}
       run: | 
         chmod +x ./testingscripts/polling.sh
-        ./testingscripts/polling.sh -endpoint https://openhackrwy2hdr5poi-staging.azurewebsites.net/api/healthcheck/poi
+        ./testingscripts/polling.sh https://openhackrwy2hdr5poi-staging.azurewebsites.net/api/healthcheck/poi
        
