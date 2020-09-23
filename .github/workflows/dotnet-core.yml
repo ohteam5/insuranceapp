@@ -2,7 +2,7 @@ name: POI API .NET Core Workflow
 
 on:
   push:
-    branches: [vasalis*]
+    branches: [ master ]
     paths:
       - 'apis/poi/**'
       - '.github/workflows/dotnet-core.yml'
