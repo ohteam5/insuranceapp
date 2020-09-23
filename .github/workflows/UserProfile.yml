@@ -51,7 +51,7 @@ jobs:
             });
     - name: Docker Build
       run: |
-        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:${{ github.run_number }} -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:latest -f ./apis/userprofile/Dockerfile ./apis/userprofile
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:${{ github.run_number }} -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:latest ./apis/userprofile
     - name: ACR authentication
       if: ${{ github.event_name != 'pull_request' }}
       uses: azure/docker-login@v1
