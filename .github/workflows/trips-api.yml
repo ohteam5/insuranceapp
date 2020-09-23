@@ -43,7 +43,7 @@ jobs:
             });      
     - name: Docker Build
       run: |
-        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-trips:${{ github.run_number }} -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-trips:latest -f ./apis/trips/web/Dockerfile ./apis/trips
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-trips:${{ github.run_number }} -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-trips:latest -f ./apis/trips/Dockerfile ./apis/trips
     - name: ACR authentication
       if: ${{ github.event_name != 'pull_request' }}
       uses: azure/docker-login@v1
