@@ -35,7 +35,7 @@ App.use(Swaggerize({
 }));
 
 App.get('/alex', function (req, res) {
-  res.send('I was there!')
+  res.send('I was there! Benjat as well')
 });
 
 App.use(Express.static('public'));
