@@ -51,7 +51,7 @@ jobs:
             });      
     - name: Docker Build
       run: |
-        docker build -t ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }} -f ./apis/poi/web/Dockerfile ./apis/poi/web
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }} -f ./apis/poi/web/Dockerfile ./apis/poi/web
     - name: ACR authentication
       if: ${{ github.event_name != 'pull_request' }}
       uses: azure/docker-login@v1
@@ -62,6 +62,6 @@ jobs:
     - name: Docker Build & Push to ACR
       if: ${{ github.event_name != 'pull_request' }}
       run: |
-        docker push ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }}
+        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-poi:${{ github.run_number }}
         
        
