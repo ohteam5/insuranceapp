@@ -57,6 +57,6 @@ jobs:
     - name: Docker Build & Push to ACR
       if: ${{ github.event_name != 'pull_request' }}
       run: |
-        docker push ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }
+        docker push ${{ env.CONTAINER_REGISTRY }}/poi:${{ github.run_number }}
         
        
