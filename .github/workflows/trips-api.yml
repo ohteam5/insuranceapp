@@ -148,7 +148,7 @@ jobs:
           chmod +x ./apis/test.sh
           ./apis/test.sh https://openhackrwy2hdr5trips.azurewebsites.net/api/healthcheck/trips
       - name: 'Rollback'
-        if: $ {{ failure() }}
+        if: ${{ failure() }}
         uses: azure/CLI@v1
         with:
           inlineScript: |
