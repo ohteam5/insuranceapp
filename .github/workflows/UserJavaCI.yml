@@ -48,4 +48,19 @@ jobs:
               repo: context.repo.repo,
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
-            });   
+            });
+    - name: Docker Build
+      run: |
+        docker build -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-user-java:${{ github.run_number }} -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-user-java:latest -f ./apis/user-java/Dockerfile ./apis/user-java
+    - name: ACR authentication
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.CONTAINER_REGISTRY }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}    
+    - name: Docker Build & Push to ACR
+      if: ${{ github.event_name != 'pull_request' }}
+      run: |
+        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-user-java:${{ github.run_number }}
+        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-user-java:latest
