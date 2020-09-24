@@ -110,7 +110,7 @@ jobs:
         #   chmod +x ./testingscripts/test.sh
         #   ./testingscripts/test.sh https://openhackrwy2hdr5trips-staging.azurewebsites.net/api/healthcheck/trips
         run: |
-          ./testingscript/test.ps1 -Uri "https://openhackrwy2hdr5trips-staging.azurewebsites.net/api/healthcheck/trips"
+          ./testingscripts/test.ps1 -Uri "https://openhackrwy2hdr5trips-staging.azurewebsites.net/api/healthcheck/trips"
       - name: Create an issue on failure
         if: ${{ failure() }}
         uses: actions/github-script@v3.0.0
@@ -150,7 +150,7 @@ jobs:
         #   chmod +x ./testingscripts/test.sh
         #   ./testingscripts/test.sh https://openhackrwy2hdr5trips.azurewebsites.net/api/healthcheck/trips
         run: |
-          ./testingscript/test.ps1 -Uri "https://openhackrwy2hdr5trips.azurewebsites.net/api/healthcheck/trips"
+          ./testingscripts/test.ps1 -Uri "https://openhackrwy2hdr5trips.azurewebsites.net/api/healthcheck/trips"
       - name: 'Rollback'
         if: ${{ failure() }}
         uses: azure/CLI@v1
