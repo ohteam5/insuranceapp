@@ -14,7 +14,7 @@ on:
 
 
 jobs:
-  test:
+  test: # Testing stage
     runs-on: ubuntu-latest
     env:
       working-directory: ./apis/trips
