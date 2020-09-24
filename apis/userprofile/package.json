@@ -35,15 +35,15 @@
         "functions": 9,
         "branches": 1,
         "reporter": [
-          "cobertura",
-          "html"
+            "cobertura",
+            "html"
         ],
         "require": [],
         "cache": true,
         "all": true,
         "temp-directory": "./reports-tmp",
         "report-dir": "./reports"
-      },
+    },
     "scripts": {
         "test": "tape 'tests/**/*.js' | tap-junit --output reports --name userprofile-report",
         "cover": "nyc tape -- 'tests/**/*.js' --cov",

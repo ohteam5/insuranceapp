@@ -38,6 +38,8 @@ App.get('/alex', function (req, res) {
   res.send('I was there! Benjat as well')
 });
 
+App.use(Express.static('public'));
+
 App.use('/api/docs/user', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 Server.listen(8080, function () {
