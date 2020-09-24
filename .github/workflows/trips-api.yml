@@ -88,6 +88,11 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: 'starting staging slots'
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp start --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot staging
       - uses: azure/appservice-settings@v1
         with:
           app-name: ${{ env.app-name }}
@@ -144,13 +149,18 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az webapp deployment slot swap --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot staging --target-slot production
+             az webapp deployment slot swap --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot staging --target-slot production
       - name: 'Is production healthy'
         # run: |
         #   chmod +x ./testingscripts/test.sh
         #   ./testingscripts/test.sh https://openhackrwy2hdr5trips.azurewebsites.net/api/healthcheck/trips
         run: |
           pwsh ./testingscripts/test.ps1 -Uri "https://openhackrwy2hdr5trips.azurewebsites.net/api/healthcheck/trips"
+      - name : 'stopping staging'
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp stop --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot staging
       - name: 'Rollback'
         if: ${{ failure() }}
         uses: azure/CLI@v1
