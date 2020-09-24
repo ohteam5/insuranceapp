@@ -56,7 +56,7 @@ jobs:
       registry-password: ${{ secrets.REGISTRY_PASSWORD }} 
       image-name: devopsoh/api-trips
       build-number: ${{github.run_number}}
-    #if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request'
 
     steps:
       - uses: actions/checkout@v2
@@ -80,7 +80,7 @@ jobs:
       container-registry: ${{ secrets.REGISTRY_URL }}
       image-name: devopsoh/api-trips
       build-number: ${{ github.run_number }}
-    #if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request'
     
     steps:
       - uses: actions/checkout@v2
@@ -132,7 +132,7 @@ jobs:
       container-registry: ${{ secrets.REGISTRY_URL }}
       image-name: devopsoh/api-trips
       build-number: ${{ github.run_number }}
-    #if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request'
 
     steps:
       - uses: actions/checkout@v2
