@@ -156,7 +156,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az webapp deployment slot swap --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot production --target-slot staging
+            az webapp deployment slot swap --name openhackrwy2hdr5trips --resource-group openhackrwy2hdr5rg --slot staging --target-slot production
       - name: Create an issue on failure
         if: ${{ failure() }}
         uses: actions/github-script@v3.0.0
