@@ -35,6 +35,8 @@ $sucessCount = 0
 
 For ($i=0; $i -lt 12; $i++)
 {
+try
+{
   $R = Invoke-WebRequest -URI $Uri
   
   $timestamp = Get-Date
@@ -60,7 +62,11 @@ For ($i=0; $i -lt 12; $i++)
   {
       break
   }
-
+}
+catch 
+{
+    Write-Output $R
+}
   Start-Sleep -Seconds 10
 }
 
